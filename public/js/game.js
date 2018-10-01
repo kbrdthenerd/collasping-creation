@@ -17,7 +17,6 @@ var config = {
 };
 
 var game = new Phaser.Game(config);
-var hasLogged = false
 
 function preload() {
   this.load.image('player', 'assets/sp_player_0.png');
@@ -28,6 +27,7 @@ function preload() {
 }
 
 function create() {
+    this.timePassed = 0
     this.score = 0
     this.particles = this.physics.add.group()
     this.nextParticles = 0
@@ -68,6 +68,8 @@ function create() {
     this.background = this.add.image(window.innerWidth/2, window.innerHeight/2, 'background');
     this.background.setDisplaySize(window.innerWidth, window.innerHeight)
 
+    this.won = false
+
 
 
     addPlayer(this, darkPinkSpiralOptions)
@@ -75,8 +77,6 @@ function create() {
     addPlayer(this, centerOptions)
     this.center.setDisplaySize(130,130)
     this.centerPoint = new Phaser.Geom.Point(window.innerWidth/2, window.innerHeight/2);
-
-    this.circle = new Phaser.Geom.Circle(window.innerWidth/2, window.innerWidth/2, 150);
 
     this.cursors = this.input.keyboard.createCursorKeys();
     this.wKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -92,13 +92,20 @@ function create() {
     this.oneKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
     this.physics.world.setBounds(50, 50, (window.innerWidth - 100), (window.innerHeight - 100), true, true, true, true);
 
-    this.text = this.add.text(16, 16, 'Collapsing Creation', { fontSize: '50px', fill: '#ffffff', alpha: 0.5 });
-    this.text.setAlpha(0.0)
-    this.textFadingIn = true
+    this.text = this.add.text(75, 75, 'Collapsing Creation', { fontSize: '100px', fill: '#ffffff' });
+    this.text.setFontFamily('font1');
+    this.text.depth = 15
+    this.winText = this.add.text(75, 75, 'You have won, a star is born!', { fontSize: '75px', fill: '#ffffff' });
+    this.winText.setFontFamily('font1');
+    this.winText.setAlpha(0.0)
+    this.winText.depth = 15
+    this.text.setAlpha(0.1)
+    this.text.fadingIn = true
 }
 
 
 function update() {
+    this.timePassed++
 
     if(this.time.now > this.nextParticles) {
         addParticles(this)
@@ -121,43 +128,40 @@ function update() {
         button2: this.forwardSlash
     }
 
-    movePlayer(this, darkPinkSpiralOptions, Phaser)
-    movePlayer(this, lightPinkSpiralOptions, Phaser)
+        movePlayer(this, darkPinkSpiralOptions, Phaser)
+        movePlayer(this, lightPinkSpiralOptions, Phaser)
+
     this.centerPoint.setTo(this.darkPinkSpiral.body.center.x, this.darkPinkSpiral.body.center.y)
     this.physics.moveTo(this.center, this.darkPinkSpiral.body.center.x, this.darkPinkSpiral.body.center.y, null, 1);
 
     handleEscapePress(Phaser, this.esc)
 
     moveParticles(this)
-    console.log(`is fading in: ${this.textFadingIn}`);
-    console.log(`alpha does not equal one: ${this.text.alpha != 1.0}`);
+    fadeInText(this, 'text', true)
+    fadeInText(this, 'winText', false)
+}
 
-
-    if(this.textFadingIn  && this.text.alpha != 1.0) {
-        console.log(this.text.alpha);
-        this.text.setAlpha(this.text.alpha + 0.001)
-    } else if (!this.textFadingIn && this.text.alpha !=0 ) {
-        this.text.setAlpha(this.text.alpha - 0.001)
+function fadeInText(self, textName, shouldFadeOut) {
+    var text = self[textName]
+    if(text.fadingIn  && text.alpha != 1.0) {
+        text.setAlpha(text.alpha + 0.001)
+    } else if (shouldFadeOut && !text.fadingIn && text.alpha !=0 ) {
+        text.setAlpha(text.alpha - 0.001)
     }
 
-    if(this.text.alpha == 1) {
-        this.textFadingIn = false
-    }
-
-    if(this.text.alpha == 0) {
-        this.textFadingIn = true
+    if(text.alpha == 1) {
+        text.fadingIn = false
     }
 }
 
 function moveParticles(self) {
     const spiralX = self.darkPinkSpiral.body.center.x
     const spiralY = self.darkPinkSpiral.body.center.y
-    Phaser.Actions.SetXY([self.circle], spiralX, spiralY);
     Phaser.Actions.Call(self.particles.getChildren(), function(particle) {
         const particleX = particle.body.center.x
         const particleY = particle.body.center.y
         if(particle.isInStar) {
-            Phaser.Actions.RotateAroundDistance([particle], self.centerPoint, self.darkPinkSpiral.body.angularVelocity / 2000 , Phaser.Math.RND.between(5, self.darkPinkSpiral.body.width/2))
+            Phaser.Actions.RotateAroundDistance([particle], self.centerPoint, self.darkPinkSpiral.body.angularVelocity , Phaser.Math.RND.between(5, self.darkPinkSpiral.body.width/2))
         } else if(particleX < spiralX + (self.darkPinkSpiral.body.width/2)  &&
             particleX > spiralX - (self.darkPinkSpiral.body.width/2)  &&
             particleY < spiralY + (self.darkPinkSpiral.body.height/2)  &&
@@ -169,9 +173,15 @@ function moveParticles(self) {
                 self.darkPinkSpiral.setDisplaySize(self.darkPinkSpiral.body.width - 10, self.darkPinkSpiral.body.height - 10)
                 self.lightPinkSpiral.setDisplaySize(self.darkPinkSpiral.body.width - 10, self.darkPinkSpiral.body.height - 10)
             }
+            if(!self.won && self.darkPinkSpiral.body.width < self.center.body.width) {
+                console.log(self.timePassed)
+                self.won = true
+                self.winText.setText(`You have won, a star is born!\nIt took ${(self.timePassed * 2 / 1000).toFixed(2)} million years!`)
+                self.winText.fadingIn = true
+            }
         } else {
             const distance = Math.sqrt(Math.pow((particleX - spiralX), 2) + Math.pow((particleY - spiralY), 2))
-            self.physics.moveTo(particle, spiralX, spiralY, null,  distance * 100000  / self.darkPinkSpiral.body.angularVelocity);
+            self.physics.moveTo(particle, spiralX, spiralY, null,  distance * 20000  / self.darkPinkSpiral.body.angularVelocity);
         }
     })
 }
@@ -218,27 +228,31 @@ function addParticles(self) {
 function movePlayer(self, options, Phaser) {
     var player = self[options.name]
     if (player) {
-        if(player.body.angularVelocity < 100) {
-            player.body.angularVelocity = 100
+        if(player.body.angularVelocity < 50) {
+            player.body.angularVelocity = 50
         }
 
-        if (options.left.isDown) {
-            player.setVelocityX(-200)
+
+        if(!self.won) {
+            if (options.left.isDown) {
+                player.setVelocityX(-200)
+            }
+             if (options.right.isDown) {
+                 player.setVelocityX(200)
+            }
+             if (options.up.isDown) {
+                 player.setVelocityY(-200)
+            }
+             if (options.down.isDown) {
+                 player.setVelocityY(200)
+            }
         }
-         if (options.right.isDown) {
-             player.setVelocityX(200)
-        }
-         if (options.up.isDown) {
-             player.setVelocityY(-200)
-        }
-         if (options.down.isDown) {
-             player.setVelocityY(200)
-        }
+
         if(options.button1 && Phaser.Input.Keyboard.JustDown(options.button1)) {
-            player.body.angularVelocity+= 100
+            player.body.angularVelocity+= 50
         }
         if(options.button2 && Phaser.Input.Keyboard.JustDown(options.button2)) {
-            player.body.angularVelocity+= 100
+            player.body.angularVelocity+= 50
         }
     }
 }

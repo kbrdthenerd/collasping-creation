@@ -73,3 +73,5 @@ typings/
 .serverless
 
 .DS_Store
+
+collapsing-creation-exe/collapsing-creation-win32-ia32
