@@ -11,5 +11,6 @@ class PlayerComponent {
         this.sceneComponent.depth = 10
 
         scene[name] = this.sceneComponent
+        this.name = name
     }
 }

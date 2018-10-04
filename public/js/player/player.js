@@ -1,14 +1,15 @@
 class Player {
     constructor(scene){
         this.scene = scene
-        this.darkSpiral = new Spiral(scene, 'darkSpiral', 'whiteSpiral', 1, 0, 0xd35f5f, scene.period),
-        this.lightSpiral = new Spiral(scene, 'lightSpiral', 'whiteSpiral', 0.9, 10, 0xffaaaa, scene.forwardSlash),
+        this.darkSpiral = new Spiral(scene, 'darkSpiral', 'combinedSpiral', 1, 0, 0xd35f5f, scene.period),
+        this.lightSpiral = new Spiral(scene, 'lightSpiral', 'combinedSpiral', 1.0, 10, 0xffaaaa, scene.forwardSlash),
         this.center = new Center(scene, 'center', 'center', 0.8, 130, 130)
         this.x = window.innerWidth/2
         this.y = window.innerHeight/2
-        this.width = this.darkSpiral.sceneComponent.body.width
-        this.height = this.darkSpiral.sceneComponent.body.height
+        this.dimension = this.darkSpiral.sceneComponent.body.width
+        console.log(this.dimension)
         this.centerPoint = new Phaser.Geom.Point(this.x, this.y);
+        this.angularVelocity = this.darkSpiral.sceneComponent.body.angularVelocity
     }
 
     update() {
@@ -18,8 +19,8 @@ class Player {
         this.lightSpiral.update()
         this.x = this.darkSpiral.sceneComponent.body.center.x
         this.y = this.darkSpiral.sceneComponent.body.center.y
-        this.width = this.darkSpiral.sceneComponent.body.width
-        this.height = this.darkSpiral.sceneComponent.body.height
+        this.dimension = this.darkSpiral.sceneComponent.body.width
+        this.angularVelocity = this.darkSpiral.sceneComponent.body.angularVelocity
     }
 
     shrink() {

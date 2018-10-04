@@ -8,7 +8,8 @@ class Spiral extends PlayerComponent {
         this.right = scene.cursors.right
         this.up = scene.cursors.up
         this.down = scene.cursors.down
-}
+        this.sceneComponent.setDisplaySize(400,400)
+    }
 
     update() {
         if(this.sceneComponent.body.angularVelocity < 50) {
