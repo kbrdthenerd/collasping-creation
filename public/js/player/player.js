@@ -24,6 +24,12 @@ class Player {
     }
 
     shrink() {
+        this.scene.particles.particles.getChildren().forEach(particle => {
+            if(particle.distance >= 10)  {
+                particle.distance -= 10
+                particle.circle = new Phaser.Geom.Circle(this.x, this.y, particle.distance)
+            }
+        })
         this.darkSpiral.sceneComponent.setDisplaySize( this.darkSpiral.sceneComponent.body.width - 10,  this.darkSpiral.sceneComponent.body.height - 10)
         this.lightSpiral.sceneComponent.setDisplaySize( this.darkSpiral.sceneComponent.body.width - 10, this.darkSpiral.sceneComponent.body.height - 10)
     }

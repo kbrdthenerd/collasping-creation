@@ -18,7 +18,7 @@ class Particles {
              particle.depth = 1
              particle.setTint(tint)
 
-             var dimension = Phaser.Math.RND.between(0, 20)
+             var dimension = Phaser.Math.RND.between(0, 10)
              particle.setDisplaySize(dimension, dimension)
          })
 
@@ -67,7 +67,7 @@ class Particles {
                  })
 
                  scene.score++
-                 if(scene.score > 0 && scene.score % 100 == 0) {
+                 if(scene.score > 0 && scene.score % 100 == 0 && !scene.won) {
                      player.shrink()
                  }
                  if(!scene.won && player.dimension < 130) {

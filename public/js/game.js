@@ -24,7 +24,7 @@ function preload() {
   this.load.image('center', 'assets/center.png');
   this.load.image('background', 'assets/background.png');
   this.load.audio('music', "assets/I ain't even mad.wav");
-  this.load.image('combinedSpiral', 'assets/combinedSpiral5.png');
+  this.load.image('combinedSpiral', 'assets/combinedSpiral6.png');
 
 }
 
