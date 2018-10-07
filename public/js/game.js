@@ -101,7 +101,7 @@ function startMusic(scene) {
     music.play()
 }
 
-function setUpInputs(scene){
+function setUpInputs(scene) {
     scene.cursors = scene.input.keyboard.createCursorKeys();
     scene.esc = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
     scene.period = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.PERIOD);

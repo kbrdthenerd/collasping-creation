@@ -25,17 +25,47 @@ class Particles {
      }
 
      update(scene, player) {
+         const left = scene.cursors.left
+         const right = scene.cursors.right
+         const up = scene.cursors.up
+         const down = scene.cursors.down
+
          Phaser.Actions.Call(this.particles.getChildren(), function(particle) {
              const particleX = particle.body.center.x
              const particleY = particle.body.center.y
              if(particle.isInStar) {
-                 Phaser.Actions.RotateAroundDistance([particle], {x: player.x, y: player.y}, player.angularVelocity / 10000 , particle.distance)
+                 Phaser.Actions.SetXY([particle.circle], player.x, player.y);
+                 Phaser.Actions.PlaceOnCircle(
+                  [particle],
+                  particle.circle,
+                  particle.startAngle.getValue(),
+                  particle.endAngle.getValue()
+                );
+
+                 //Phaser.Actions.RotateAroundDistance([particle], {x: player.x, y: player.y}, player.angularVelocity / 10000 , particle.distance)
              } else if(particleX < player.x + (player.dimension/2)  &&
                  particleX > player.x - (player.dimension/2)  &&
                  particleY < player.y + (player.dimension/2)  &&
                  particleY > player.y - (player.dimension/2) ){
                  particle.isInStar = true
                  particle.distance = Phaser.Math.RND.between(5, player.dimension/2)
+
+                 particle.circle = new Phaser.Geom.Circle(player.x, player.y, particle.distance);
+
+                 particle.startAngle = scene.tweens.addCounter({
+                   from: 0,
+                   to: 6.28,
+                   duration: 6000,
+                   repeat: -1
+                 })
+
+                 particle.endAngle = scene.tweens.addCounter({
+                   from: 6.28,
+                   to: 12.56,
+                   duration: 6000,
+                   repeat: -1
+                 })
+
                  scene.score++
                  if(scene.score > 0 && scene.score % 100 == 0) {
                      player.shrink()
