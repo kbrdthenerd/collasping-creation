@@ -45,16 +45,13 @@ function create() {
     this.player = new Player(this)
     this.particles = new Particles(this)
 
-    this.openingTexts = [new Text(this, 'Collapsing Creation', 75, 75, '100px', true),
-    new Text(this, 'Programming and art by Katherine Brennan', 75, 75, '100px', true),
-    new Text(this, 'Background by Lisa Bradley', 75, 75, '100px', true)]
+    this.openingTexts = [new Text(this, 'Collapsing Creation', 75, 75, '100px', true, 0.002),
+    new Text(this, 'Collect space dust to become a star', 415, 150, '40px', true, 0.002),
+    new Text(this, 'Programming and art by Katherine Brennan, background by Lisa Bradley, and music by Sarah Wahoff', 75, window.innerHeight - 100, '32px', true, 0.002)]
 
     this.currentText = 0
-    this.openingTexts[this.currentText].startFadeIn()
-
-
-    //this.title = new Text(this, 'Collapsing Creation', 75, 75, '100px', true)
-    this.winText = new Text(this, 'You have won, a star is born!', 75, 75, '75px', true)
+    this.openingTexts.forEach(text => text.startFadeIn())
+    this.winText = new Text(this, 'You have won, a star is born!', 75, 75, '75px', false, 0.002)
 }
 
 
@@ -72,11 +69,8 @@ function update() {
     handleEscapePress(Phaser, this.esc)
 
     this.winText.update()
-    this.openingTexts[this.currentText].update()
-    // if(this.openingTexts[this.currentText].alpha < 0 && this.currentText < this.openingTexts.length) {
-    //     this.currentText+= 1
-    //     this.openingTexts[this.currentText].startFadeIn()
-    // }
+    this.openingTexts.forEach(text => text.update())
+
 }
 
 function handleEscapePress(Phaser, esc) {

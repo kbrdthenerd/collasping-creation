@@ -7,7 +7,6 @@ class Player {
         this.x = window.innerWidth/2
         this.y = window.innerHeight/2
         this.dimension = this.darkSpiral.sceneComponent.body.width
-        console.log(this.dimension)
         this.centerPoint = new Phaser.Geom.Point(this.x, this.y);
         this.angularVelocity = this.darkSpiral.sceneComponent.body.angularVelocity
     }

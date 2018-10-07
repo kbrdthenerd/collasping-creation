@@ -1,5 +1,5 @@
 class Text {
-    constructor(scene, text, x, y, size, shouldFadeOut) {
+    constructor(scene, text, x, y, size, shouldFadeOut, fadeInRate) {
         this.fadingIn = false
         this.shouldFadeOut = shouldFadeOut
 
@@ -7,6 +7,7 @@ class Text {
         this.sceneText.setFontFamily('font1');
         this.sceneText.setAlpha(0.0)
         this.sceneText.depth = 15
+        this.fadeInRate = fadeInRate
     }
 
     startFadeIn() {
@@ -22,9 +23,9 @@ class Text {
         this.alpha = this.sceneText.alpha
 
         if(this.fadingIn  && this.sceneText.alpha != 1.0) {
-            this.sceneText.setAlpha(this.sceneText.alpha + 0.001)
-        } else if (this.shouldFadeOut && !this.fadingIn && this.sceneText.alpha !=0 ) {
-            this.sceneText.setAlpha(this.sceneText.alpha - 0.001)
+            this.sceneText.setAlpha(this.sceneText.alpha + this.fadeInRate)
+        } else if (this.shouldFadeOut && !this.fadingIn) {
+            this.sceneText.setAlpha(this.sceneText.alpha - 0.002)
         }
 
         if(this.sceneText.alpha == 1) {
