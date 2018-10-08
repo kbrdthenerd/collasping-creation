@@ -3,6 +3,6 @@
     "slug":"collapsing-creation-win32-ia32",
     "min_players":"1",
     "max_players":"2",
-    "executable":"collapsing-creation.exe",
+    "executable":"collapsing-creation-win32-ia32/collapsing-creation.exe",
     "image_url":"splash.png"
 }
