@@ -1,8 +1,8 @@
 {
     "title":"Collapsing Creation",
-    "slug":"collapsing-creation-win32-ia32",
+    "slug":"collapsing-creation-exe",
     "min_players":"1",
-    "max_players":"2",
+    "max_players":"1",
     "executable":"collapsing-creation-win32-ia32/collapsing-creation.exe",
     "image_url":"splash.png"
 }
