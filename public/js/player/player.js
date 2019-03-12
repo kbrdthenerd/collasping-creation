@@ -1,8 +1,8 @@
 class Player {
     constructor(scene){
         this.scene = scene
-        this.darkSpiral = new Spiral(scene, 'darkSpiral', 'combinedSpiral', 1, 0, 0xd35f5f, scene.period),
-        this.lightSpiral = new Spiral(scene, 'lightSpiral', 'combinedSpiral', 1.0, 10, 0xffaaaa, scene.forwardSlash),
+        this.darkSpiral = new Spiral(scene, 'darkSpiral', 'combinedSpiral', 1, 0, 0xd35f5f, scene.space),
+        this.lightSpiral = new Spiral(scene, 'lightSpiral', 'combinedSpiral', 1.0, 10, 0xffaaaa, scene.space),
         this.center = new Center(scene, 'center', 'center', 0.8, 130, 130)
         this.x = window.innerWidth/2
         this.y = window.innerHeight/2

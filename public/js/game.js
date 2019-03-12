@@ -47,7 +47,10 @@ function create() {
 
     this.openingTexts = [new Text(this, 'Collapsing Creation', 75, 75, '100px', true, 0.002),
     new Text(this, 'Collect space dust to become a star', 415, 150, '40px', true, 0.002),
-    new Text(this, 'Programming and art by Katherine Brennan, background by Lisa Bradley, and music by Sarah Wahoff', 75, window.innerHeight - 100, '32px', true, 0.002)]
+    new Text(this, 'Press arrows to move & mash space to spin!', 415, 200, '30px', true, 0.002),
+    new Text(this, 'Music by Sarah Wahoff', 75, window.innerHeight - 200, '32px', true, 0.002),
+    new Text(this, 'Background by Lisa Lubert', 75, window.innerHeight - 150, '32px', true, 0.002),
+    new Text(this, 'Design & programming Katherine Brennan', 75, window.innerHeight - 100, '32px', true, 0.002)]
 
     this.currentText = 0
     this.openingTexts.forEach(text => text.startFadeIn())
@@ -66,20 +69,9 @@ function update() {
     this.player.update()
     this.particles.update(this, this.player)
 
-    handleEscapePress(Phaser, this.esc)
-
     this.winText.update()
     this.openingTexts.forEach(text => text.update())
 
-}
-
-function handleEscapePress(Phaser, esc) {
-    if (Phaser.Input.Keyboard.JustDown(esc))
-     {
-         var remote = require('electron').remote;
-         var window = remote.getCurrentWindow();
-         window.close();
-     }
 }
 
 function startMusic(scene) {
@@ -97,7 +89,5 @@ function startMusic(scene) {
 
 function setUpInputs(scene) {
     scene.cursors = scene.input.keyboard.createCursorKeys();
-    scene.esc = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-    scene.period = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.PERIOD);
-    scene.forwardSlash = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FORWARD_SLASH);
+    scene.space = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 }
